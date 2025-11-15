@@ -1,0 +1,33 @@
+// Leetcode 1091 
+// Shortest Path in Binary Matrix by BFS
+class Solution {
+     public int shortestPathBinaryMatrix(int[][] grid){
+      if(grid[0][0] == 1) return -1;
+      int n = grid.length;
+        int pathLength = 0;
+        boolean [][] visited = new boolean[n][n];
+      Queue<int []> q = new LinkedList<>();
+        q.add(new int[]{0 , 0});
+        int [] dx = { 0 , 0 , 1 , -1 , -1 , -1 , 1 , 1};
+        int [] dy = { 1, -1 , 0 , 0 , -1 , 1 , -1 , 1};
+        while (!q.isEmpty()){
+            pathLength++;
+            int size = q.size();
+            for (int j = 0; j < size; j++){
+                int [] element = q.poll();
+                if(element[0] == n-1 && element[1] == n-1) return pathLength;
+                for (int i = 0; i < 8; i++) {
+                    int x = element[0] + dx[i];
+                    int y = element[1] + dy[i];
+                    if(x >= 0 && y>= 0 && x< n && y < n && grid[x][y] == 0 && !visited[x][y]){
+                        q.add(new int[]{x , y});
+                        visited[x][y] = true;
+                    }
+                }
+            }
+
+
+        }
+        return -1;
+    }
+}
