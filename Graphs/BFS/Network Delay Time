@@ -1,0 +1,40 @@
+// Leetcode 743 - Network Delay Time
+// Solved using Dijkstra Algorithm
+
+class Solution {
+     public int networkDelayTime(int[][] times, int n, int k) {
+        int len = times.length;
+        List<List<int []>> adjList = new ArrayList<>();
+        PriorityQueue<int []> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
+        int [] dist = new int[n];
+        Arrays.fill(dist , Integer.MAX_VALUE);
+        for (int i = 0; i < n; i++) adjList.add(new ArrayList<>());
+        for (int i = 0; i < times.length; i++){
+            int [] element = times[i];
+            List<int []> l = adjList.get(element[0] - 1);
+            l.add(new int[]{element[1]-1 , element[2]});
+//             node , weight
+        }
+        dist[k-1] = 0;
+         pq.add(new int[]{k-1 , 0});
+         
+         while (!pq.isEmpty()){
+             int [] element = pq.poll();
+             int node = element[0];
+             int weight = element[1];
+             for (int [] e : adjList.get(node)){
+                 int newWeight = weight + e[1];
+                 if(newWeight < dist[e[0]]){
+                     dist[e[0]] = newWeight;
+                     pq.add(new int[]{e[0] , newWeight});
+                 }
+             }
+         }
+         int maxWeight = 0;
+        for (int i = 0; i < dist.length; i++) {
+            if(dist[i] == Integer.MAX_VALUE) return -1;
+            maxWeight = Math.max(maxWeight , dist[i]);
+        }
+        return maxWeight;
+    }
+}
